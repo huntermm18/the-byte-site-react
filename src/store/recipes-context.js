@@ -1,7 +1,8 @@
 import { createContext, useEffect, useState, useCallback } from "react";
 
 // set base to be local server if running locally, otherwise use production server
-const ENV = "dev";
+// const ENV = "dev";
+const ENV = "";
 const base =
   ENV === "dev"
     ? "http://localhost:3001"
