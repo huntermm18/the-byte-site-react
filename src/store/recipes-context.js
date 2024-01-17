@@ -1,12 +1,9 @@
 import { createContext, useEffect, useState, useCallback } from "react";
 
-// set base to be local server if running locally, otherwise use production server
-// const ENV = "dev";
-const ENV = "";
-const base =
-  ENV === "dev"
-    ? "http://localhost:3001"
-    : "https://us-west-2.aws.data.mongodb-api.com";
+const base = "https://corsproxy.io/?https://us-west-2.aws.data.mongodb-api.com"
+  // ENV === "dev"
+    // ? "http://localhost:3001"
+    // : "https://us-west-2.aws.data.mongodb-api.com";
 
 const RecipesContext = createContext({
   getRecipes: (refresh = false) => {},
@@ -37,7 +34,6 @@ export function RecipesContextProvider(props) {
           email: "huntermm17@gmail.com",
           password: "bytesite",
         },
-
         body: JSON.stringify({
           dataSource: "byte-site-cluster",
           database: "recipes",
