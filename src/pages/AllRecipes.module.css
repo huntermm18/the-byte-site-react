@@ -1,0 +1,30 @@
+/* AllRecipesPage.css */
+
+.tag-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .chip {
+    padding: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #e0e0e0;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+  
+  .chip-active {
+    background-color: #2196f3;
+    color: #fff;
+  }
+  
+
+  .recipe-display {
+    margin: 0px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
