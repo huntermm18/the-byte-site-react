@@ -30,14 +30,11 @@ function AddRecipePage(props) {
   function submitHandler(event) {
     event.preventDefault();
 
-    const enteredTitle = titleInputRef.current.value;
-    const enteredDescription = descriptionInputRef.current.value;
-
     const newRecipeData = {
-      title: enteredTitle,
+      title: titleInputRef.current.value,
       image: null,
       ingredients: ingredients,
-      description: enteredDescription,
+      description: descriptionInputRef.current.value,
       tags: selectedTags,
     };
 

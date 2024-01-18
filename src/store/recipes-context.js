@@ -1,9 +1,11 @@
 import { createContext, useEffect, useState, useCallback } from "react";
 
 const base = "https://corsproxy.io/?https://us-west-2.aws.data.mongodb-api.com"
-  // ENV === "dev"
-    // ? "http://localhost:3001"
-    // : "https://us-west-2.aws.data.mongodb-api.com";
+// const ENV = "dev";
+// const base =
+//   ENV === "dev"
+//     ? "http://localhost:3001"
+//     : "https://us-west-2.aws.data.mongodb-api.com";
 
 const RecipesContext = createContext({
   getRecipes: (refresh = false) => {},
@@ -88,23 +90,68 @@ export function RecipesContextProvider(props) {
     return response.status;
   }
 
-  function removeRecipeHandler(meetupId) {
-    // todo
+  async function removeRecipeHandler(recipeId, password) {
+    const url = `${base}/app/data-wasdn/endpoint/data/v1/action/deleteOne`;
+
+    console.log("removing recipe: ", recipeId);
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/ejson",
+        Accept: "application/json",
+        email: "huntermm18@gmail.com",
+        password: password,
+      },
+      body: JSON.stringify({
+        dataSource: "byte-site-cluster",
+        database: "recipes",
+        collection: "recipe-collection",
+        filter: { _id: { "$oid": recipeId } },
+      }),
+    });
+
+    console.log(
+      response.ok
+        ? "success removing recipe"
+        : `failed to remove recipe - ${response}`
+    );
+
+    getRecipesHandler(true); // refresh recipes
+    return response.status;
   }
 
-  function editRecipeHandler(meetupId) {
-    // todo
+  async function editRecipeHandler(recipeId, updatedRecipeData, password) {
+    const url = `${base}/app/data-wasdn/endpoint/data/v1/action/updateOne`;
+    console.log("editing recipe: ", updatedRecipeData.title);
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/ejson",
+        Accept: "application/json",
+        email: "huntermm18@gmail.com",
+        password: password,
+      },
+      body: JSON.stringify({
+        dataSource: "byte-site-cluster",
+        database: "recipes",
+        collection: "recipe-collection",
+        filter: { _id: { "$oid": recipeId } },
+        update: { $set: updatedRecipeData },
+      }),
+    });
+
+    console.log(await response.json());
+    console.log(
+      response.ok
+        ? "success editing recipe"
+        : `failed to edit recipe - ${response}`
+    );
+
+    getRecipesHandler(true); // refresh recipes
+    return response.status;
   }
-
-  //   function removeFavoriteHandler(meetupId) {
-  //     setUserFavorites((prevUserFavorites) => {
-  //       return prevUserFavorites.filter((meetup) => meetup.id !== meetupId);
-  //     });
-  //   }
-
-  //   function itemIsFavoriteHandler(meetupId) {
-  //     return userFavorites.some((meetup) => meetup.id === meetupId);
-  //   }
 
   const context = {
     recipes: recipes,

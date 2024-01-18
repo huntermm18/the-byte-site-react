@@ -16,9 +16,9 @@ import RecipesContext from "../store/recipes-context";
 import SearchBar from "../components/SearchBar";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 function EditRecipePage(props) {
   const recipesCtx = useContext(RecipesContext);
@@ -28,10 +28,14 @@ function EditRecipePage(props) {
 
   const [ingredients, setIngredients] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [openDialog, setOpenDialog] = React.useState(false);
-  const [dialogContent, setDialogContent] = React.useState({});
+  const [openDialogCancel, setOpenDialogCancel] = React.useState(false);
+  const [openDialogUpdate, setOpenDialogUpdate] = React.useState(false);
+  const [openDialogDelete, setOpenDialogDelete] = React.useState(false);
+  const [openSnackBar, setOpenSnackBar] = React.useState(false);
+  const [apiStatus, setApiStatus] = React.useState(false);
 
   const addIngredientHandler = () => {
     setIngredients((prevIngredients) => [...prevIngredients, ""]);
@@ -45,10 +49,12 @@ function EditRecipePage(props) {
 
   function submitHandler(event) {
     event.preventDefault();
+    setOpenDialogUpdate(true);
   }
 
   const handleSearchChange = (event) => {
     const searchValue = event.target.value;
+    setSearchValue(searchValue);
     const results = recipesCtx.recipes.filter((recipe) =>
       recipe.title.toLowerCase().includes(searchValue.toLowerCase())
     );
@@ -56,28 +62,120 @@ function EditRecipePage(props) {
   };
 
   const handleCancel = () => {
-    setDialogContent({ message: "Are you sure you want to cancel?"})
-    setOpenDialog(true);
-  }
+    setSelectedRecipe(null);
+    setOpenDialogCancel(false);
+    setSearchValue("");
+  };
+
+  const handleUpdate = () => {
+    const updatedRecipeData = {
+      title: titleInputRef.current.value,
+      image: null,
+      ingredients: ingredients,
+      description: descriptionInputRef.current.value,
+      tags: selectedTags,
+    };
+    recipesCtx
+      .editRecipe(
+        selectedRecipe._id,
+        updatedRecipeData,
+        addRecipePasswordInputRef.current.value.toLowerCase()
+      )
+      .then((status) => {
+        setApiStatus(status);
+        setOpenSnackBar(true);
+      });
+    setOpenDialogUpdate(false);
+    setSelectedRecipe(null);
+    setSearchValue("");
+  };
+
+  const handleDelete = () => {
+    const password = addRecipePasswordInputRef.current.value.toLowerCase();
+    if (!password) {
+      alert("Please enter a password to delete the recipe.");
+      setOpenDialogDelete(false);
+      return;
+    }
+    recipesCtx
+      .removeRecipe(selectedRecipe._id, password.toLowerCase())
+      .then((status) => {
+        setApiStatus(status);
+        setOpenSnackBar(true);
+      });
+    setOpenDialogDelete(false);
+    setSelectedRecipe(null);
+    setSearchValue("");
+  };
 
   return (
     <Box width="800px" margin="auto">
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={openSnackBar}
+        autoHideDuration={7000}
+        onClose={() => setOpenSnackBar(false)}
+        severity={apiStatus === 200 ? "success" : ""}
+      >
+        <Alert
+          onClose={() => setOpenSnackBar(false)}
+          severity={apiStatus === 200 ? "success" : "error"}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {apiStatus === 200
+            ? "Success!"
+            : apiStatus === 401
+            ? "Incorrect password"
+            : "Error making update"}
+        </Alert>
+      </Snackbar>
 
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>{dialogContent.message}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-
-          </DialogContentText>
-        </DialogContent>
+      {/* Cancel Dialog */}
+      <Dialog
+        open={openDialogCancel}
+        onClose={() => setOpenDialogCancel(false)}
+      >
+        <DialogTitle>Are you sure you want to cancel?</DialogTitle>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Close</Button>
+          <Button onClick={handleCancel} variant="outlined" color="secondary">
+            Yes
+          </Button>
+          <Button onClick={() => setOpenDialogCancel(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Update Dialog */}
+      <Dialog
+        open={openDialogUpdate}
+        onClose={() => setOpenDialogUpdate(false)}
+      >
+        <DialogTitle>Are you sure you want to update this recipe?</DialogTitle>
+        <DialogActions>
+          <Button onClick={handleUpdate} variant="outlined" color="primary">
+            Update
+          </Button>
+          <Button onClick={() => setOpenDialogUpdate(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Delete Dialog */}
+      <Dialog
+        open={openDialogDelete}
+        onClose={() => setOpenDialogDelete(false)}
+      >
+        <DialogTitle>Are you sure you want to delete this recipe?</DialogTitle>
+        <DialogActions>
+          <Button onClick={handleDelete} variant="outlined" color="error">
+            Delete
+          </Button>
+          <Button onClick={() => setOpenDialogDelete(false)}>Close</Button>
         </DialogActions>
       </Dialog>
 
       <Card>
         <CardContent>
-          <SearchBar onChange={handleSearchChange} />
+          <SearchBar onChange={handleSearchChange} value={searchValue}/>
           {searchResults.map((result, index) => (
             <p
               key={index}
@@ -170,7 +268,7 @@ function EditRecipePage(props) {
                   variant="contained"
                   color="secondary"
                   type="button"
-                  onClick={handleCancel}
+                  onClick={() => setOpenDialogCancel(true)}
                 >
                   Cancel
                 </Button>
@@ -179,7 +277,7 @@ function EditRecipePage(props) {
                   variant="contained"
                   color="primary"
                   type="submit"
-                  // onClick={setOpenDialog(true)}
+                  // onClick={() => setOpenDialogUpdate(true)}
                 >
                   Update Recipe
                 </Button>
@@ -187,7 +285,8 @@ function EditRecipePage(props) {
                   style={{ margin: "10px" }}
                   variant="contained"
                   color="error"
-                  type="submit"
+                  type="button"
+                  onClick={() => setOpenDialogDelete(true)}
                 >
                   Delete Recipe
                 </Button>

@@ -45,7 +45,7 @@ function AllRecipesPage() {
 
       <div className={classes["recipe-display"]}>
         {filteredRecipes.map((recipe) => (
-          <RecipeCard key={recipe.title + recipe.ingredients} recipe={recipe} />
+          <RecipeCard key={recipe._id} recipe={recipe} />
         ))}
       </div>
     </div>
