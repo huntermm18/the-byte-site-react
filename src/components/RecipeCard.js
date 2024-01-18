@@ -8,7 +8,6 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 function RecipeCard(props) {
@@ -54,13 +53,12 @@ function RecipeCard(props) {
               </ul>
             )}
             {props.recipe.instructions && (
-              <div>
-                {props.recipe.instructions}
-              </div>
+              <div>{props.recipe.instructions}</div>
             )}
             <div className={chipClasses["tag-chips"]}>
               {props.recipe.tags.map((tag) => (
                 <div
+                  key={tag}
                   className={chipClasses.chip}
                   style={{ pointerEvents: "none" }}
                 >
@@ -75,20 +73,16 @@ function RecipeCard(props) {
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>{props.recipe.title}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            {props.recipe.ingredients && (
-              <ul>
-                {props.recipe.ingredients.map((ingredient, index) => (
-                  <li key={index}>{ingredient}</li>
-                ))}
-              </ul>
-            )}
-            {props.recipe.instructions && (
-              <div>
-                {props.recipe.instructions}
-              </div>
-            )}
-          </DialogContentText>
+          {props.recipe.ingredients && (
+            <ul>
+              {props.recipe.ingredients.map((ingredient, index) => (
+                <li key={index}>{ingredient}</li>
+              ))}
+            </ul>
+          )}
+          {props.recipe.instructions && (
+            <span>{props.recipe.instructions}</span>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Close</Button>
@@ -99,41 +93,3 @@ function RecipeCard(props) {
 }
 
 export default RecipeCard;
-
-// return (
-//   <div className={classes["recipe-card"]}>
-//     <img
-//       src={
-//         props.recipe.image ||
-//         "https://media.istockphoto.com/id/1304722048/vector/chef-line-icon.jpg?s=612x612&w=0&k=20&c=YJ6EQULaJDhf5sdIn8SEUDd09aJtB_RnP24kmoKY290="
-//       }
-//       alt={props.recipe.title}
-//       className={classes["recipe-image"]}
-//     />
-//     <div className={classes["card-content"]}>
-//       <div className={classes["title-expand-container"]}>
-//         <h2 className={classes["recipe-title"]}>{props.recipe.title}</h2>
-//         <IconButton onClick={toggleExpand} >
-//           {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-//         </IconButton>
-//       </div>
-//       <p className={classes["recipe-description"]}>
-//         {props.recipe.description}
-//       </p>
-//       {isExpanded && (
-//         <>
-//           {props.recipe.ingredients && (
-//             <ul className={classes["recipe-ingredients"]}>
-//               {props.recipe.ingredients.map((ingredient, index) => (
-//                 <li key={index}>{ingredient}</li>
-//               ))}
-//             </ul>
-//           )}
-//           <p className={classes["recipe-instructions"]}>
-//             {props.recipe.instructions}
-//           </p>
-//         </>
-//       )}
-//     </div>
-//   </div>
-// );

@@ -19,7 +19,7 @@ import Alert from "@mui/material/Alert";
 function AddRecipePage(props) {
   const recipesCtx = useContext(RecipesContext);
   const titleInputRef = useRef();
-  const descriptionInputRef = useRef();
+  const instructionsInputRef = useRef();
   const addRecipePasswordInputRef = useRef();
 
   const [ingredients, setIngredients] = useState([""]);
@@ -32,13 +32,12 @@ function AddRecipePage(props) {
 
     const newRecipeData = {
       title: titleInputRef.current.value,
-      image: null,
+      picture: null,
       ingredients: ingredients,
-      description: descriptionInputRef.current.value,
+      instructions: instructionsInputRef.current.value,
       tags: selectedTags,
     };
 
-    console.log("Adding new recipe", newRecipeData);
     recipesCtx
       .addRecipe(
         newRecipeData,
@@ -47,6 +46,12 @@ function AddRecipePage(props) {
       .then((status) => {
         setAddStatus(status);
         setOpenSnackBar(true);
+        if (status === 201) {
+          titleInputRef.current.value = "";
+          instructionsInputRef.current.value = "";
+          setIngredients([""]);
+          setSelectedTags([]);
+        }
       });
   }
 
@@ -83,9 +88,10 @@ function AddRecipePage(props) {
         </Alert>
       </Snackbar>
 
+      <h1>Add a Recipe</h1>
       <Card>
         <CardContent>
-          <p>Add a Recipe</p>
+          
           {/* Form submission handler */}
           <form onSubmit={submitHandler}>
             {/* Form control for the recipe password */}
@@ -139,7 +145,7 @@ function AddRecipePage(props) {
                 label="Directions"
                 multiline
                 rows={5}
-                inputRef={descriptionInputRef}
+                inputRef={instructionsInputRef}
               />
             </FormControl>
             {/* Autocomplete input for the recipe tags */}

@@ -8,10 +8,11 @@ import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
+import AddIcon from '@mui/icons-material/Add';
 import ArticleIcon from "@mui/icons-material/Article";
 import EditIcon from "@mui/icons-material/Edit";
 
@@ -34,7 +35,7 @@ function Layout(props) {
       to: "/all-recipes",
     },
     {
-      icon: <AddCircleIcon />,
+      icon: <AddIcon />,
       title: "Add a Recipe",
       to: "/add-recipe",
     },
@@ -64,8 +65,10 @@ function Layout(props) {
         <List>
           {items.map((item, index) => (
             <ListItem key={index} component={Link} to={item.to}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.title} />
+              <ListItemButton>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.title} />
+              </ListItemButton>
             </ListItem>
           ))}
         </List>

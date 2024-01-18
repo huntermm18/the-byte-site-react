@@ -62,7 +62,7 @@ export function RecipesContextProvider(props) {
 
   async function addRecipeHandler(recipeData, password) {
     const url = `${base}/app/data-wasdn/endpoint/data/v1/action/insertOne`;
-    console.log("adding recipe: ", recipeData);
+    console.log("Adding recipe: ", recipeData);
 
     const response = await fetch(url, {
       method: "POST",
@@ -113,7 +113,7 @@ export function RecipesContextProvider(props) {
 
     console.log(
       response.ok
-        ? "success removing recipe"
+        ? `success removing recipe - count: ${await response.json().then((data) => data.deletedCount)}`
         : `failed to remove recipe - ${response}`
     );
 

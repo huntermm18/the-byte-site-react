@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   Button,
   TextField,
@@ -23,8 +23,9 @@ import Alert from "@mui/material/Alert";
 function EditRecipePage(props) {
   const recipesCtx = useContext(RecipesContext);
   const titleInputRef = useRef();
-  const descriptionInputRef = useRef();
+  const directionsInputRef = useRef();
   const addRecipePasswordInputRef = useRef();
+  // const tagsInputRef = useRef();
 
   const [ingredients, setIngredients] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
@@ -70,10 +71,11 @@ function EditRecipePage(props) {
   const handleUpdate = () => {
     const updatedRecipeData = {
       title: titleInputRef.current.value,
-      image: null,
+      picture: null,
       ingredients: ingredients,
-      description: descriptionInputRef.current.value,
+      instructions: directionsInputRef.current.value,
       tags: selectedTags,
+      // tags: tagsInputRef.current.value,
     };
     recipesCtx
       .editRecipe(
@@ -107,6 +109,17 @@ function EditRecipePage(props) {
     setSelectedRecipe(null);
     setSearchValue("");
   };
+
+  useEffect(() => {
+    // update the recipe data in the form when a recipe is selected (and set search results to empty array)
+    if (selectedRecipe) {
+      titleInputRef.current.value = selectedRecipe.title;
+      setIngredients(selectedRecipe.ingredients);
+      setSelectedTags(selectedRecipe.tags);
+      directionsInputRef.current.value = selectedRecipe.instructions;
+      setSearchResults([]);
+    }
+  }, [selectedRecipe]);
 
   return (
     <Box width="800px" margin="auto">
@@ -173,24 +186,28 @@ function EditRecipePage(props) {
         </DialogActions>
       </Dialog>
 
-      <Card>
-        <CardContent>
-          <SearchBar onChange={handleSearchChange} value={searchValue}/>
-          {searchResults.map((result, index) => (
-            <p
-              key={index}
-              onClick={() => {
-                setSelectedRecipe(result);
-                setSelectedTags(result.tags);
-                setSearchResults([]);
-                setIngredients(result.ingredients);
-              }}
-            >
-              {result.title}
-            </p>
-          ))}
-          {selectedRecipe && (
+      <h1>Edit Recipe</h1>
+      <SearchBar onChange={handleSearchChange} value={searchValue} />
+      {searchResults.map((result, index) => (
+        <p
+          style={{ cursor: "pointer" }}
+          key={index}
+          onClick={() => {
+            setSelectedRecipe(result);
+            setSearchValue("");
+          }}
+        >
+          {result.title}
+        </p>
+      ))}
+      <br />
+      <br />
+
+      {selectedRecipe && (
+        <Card>
+          <CardContent>
             <form onSubmit={submitHandler}>
+              <h2>{selectedRecipe.title}</h2>
               <FormControl margin="normal" fullWidth>
                 <TextField
                   id="editPassword"
@@ -205,7 +222,6 @@ function EditRecipePage(props) {
                   label="Title"
                   inputRef={titleInputRef}
                   required
-                  value={selectedRecipe ? selectedRecipe.title : ""}
                 />
               </FormControl>
               {ingredients &&
@@ -237,8 +253,7 @@ function EditRecipePage(props) {
                   label="Directions"
                   multiline
                   rows={5}
-                  value={selectedRecipe.instructions}
-                  inputRef={descriptionInputRef}
+                  inputRef={directionsInputRef}
                 />
               </FormControl>
               <FormControl margin="normal" fullWidth>
@@ -292,9 +307,9 @@ function EditRecipePage(props) {
                 </Button>
               </div>
             </form>
-          )}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
     </Box>
   );
 }

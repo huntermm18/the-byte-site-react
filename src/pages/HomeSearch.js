@@ -19,8 +19,7 @@ const HomeSearchPage = () => {
         />
       </div>
 
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <ul>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           {recipesCtx.recipes.map((recipe, index) => {
             if (
               recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -30,7 +29,6 @@ const HomeSearchPage = () => {
             }
             return null;
           })}
-        </ul>
       </div>
     </div>
   );

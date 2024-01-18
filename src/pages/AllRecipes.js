@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import tags from "../data/tags.json";
-// import { get_recipes } from "../data/recipe_data";
 import classes from "./AllRecipes.module.css";
 import RecipeCard from "../components/RecipeCard";
 
