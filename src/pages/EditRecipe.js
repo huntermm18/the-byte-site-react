@@ -133,7 +133,7 @@ function EditRecipePage(props) {
         <Alert
           onClose={() => setOpenSnackBar(false)}
           severity={apiStatus === 200 ? "success" : "error"}
-          variant="filled"
+          variant="standard"
           sx={{ width: "100%" }}
         >
           {apiStatus === 200

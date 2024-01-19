@@ -1,3 +1,4 @@
+
 import React, { useRef, useState } from "react";
 import {
   Button,
@@ -77,7 +78,7 @@ function AddRecipePage(props) {
         <Alert
           onClose={() => setOpenSnackBar(false)}
           severity={addStatus === 201 ? "success" : "error"}
-          variant="filled"
+          variant="standard"
           sx={{ width: "100%" }}
         >
           {addStatus === 201
@@ -91,7 +92,7 @@ function AddRecipePage(props) {
       <h1>Add a Recipe</h1>
       <Card>
         <CardContent>
-          
+
           {/* Form submission handler */}
           <form onSubmit={submitHandler}>
             {/* Form control for the recipe password */}

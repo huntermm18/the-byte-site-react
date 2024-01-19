@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import tags from "../data/tags.json";
 import classes from "./AllRecipes.module.css";
 import RecipeCard from "../components/RecipeCard";
-
 import { useContext } from "react";
 import RecipesContext from "../store/recipes-context";
+import Chip from '@mui/material/Chip';
+
 
 function AllRecipesPage() {
   const recipesCtx = useContext(RecipesContext);
@@ -24,11 +25,10 @@ function AllRecipesPage() {
     <div>
       <div className={classes["tag-chips"]} >
         {Object.keys(tags).map((tag) => (
-          <div
+          <Chip
             key={tag}
-            className={`${classes.chip} ${
-              activeTags.includes(tag) ? classes["chip-active"] : ""
-            }`}
+            label={tags[tag]}
+            color={activeTags.includes(tag) ? "primary" : "default"}
             onClick={() => {
               if (activeTags.includes(tag)) {
                 setActiveTags(activeTags.filter((t) => t !== tag));
@@ -37,8 +37,7 @@ function AllRecipesPage() {
               }
             }}
           >
-            {tags[tag]}
-          </div>
+          </Chip>
         ))}
       </div>
 

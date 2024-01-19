@@ -1,20 +1,19 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
 import ArticleIcon from "@mui/icons-material/Article";
 import EditIcon from "@mui/icons-material/Edit";
+import {
+  Drawer,
+  Nav,
+} from "rsuite";
+import "rsuite/dist/rsuite.min.css";
 
 function Layout(props) {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -47,8 +46,8 @@ function Layout(props) {
   ];
 
   return (
-    <div style={{ padding: "20px" }}>
-      <AppBar position="fixed" style={{ height: "70px" }}>
+    <div>
+      <AppBar position="" style={{ height: "70px" }} >
         <Toolbar>
           <IconButton
             edge="start"
@@ -61,20 +60,42 @@ function Layout(props) {
           <Typography variant="h6">The Byte Site</Typography>
         </Toolbar>
       </AppBar>
-      <Drawer open={drawerOpen} onClose={toggleDrawer}>
-        <List>
-          {items.map((item, index) => (
-            <ListItem key={index} component={Link} to={item.to}>
-              <ListItemButton>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.title} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+
+      <Drawer
+        open={drawerOpen}
+        onClose={toggleDrawer}
+        placement="left"
+        size="sm"
+      >
+        <Drawer.Header>
+          <Drawer.Title>The Byte Site</Drawer.Title>
+          {/* <Drawer.Actions>
+            <Button onClick={toggleDrawer}>Cancel</Button>
+            <Button onClick={toggleDrawer} appearance="primary">
+              Confirm
+            </Button>
+          </Drawer.Actions> */}
+        </Drawer.Header>
+        <Drawer.Body style={{ padding: "10px" }}>
+          <Nav style={{ display: "flex", flexDirection: "column" }}>
+            {items.map((item, index) => (
+              <Nav.Item
+                eventKey={index}
+                component={Link}
+                to={item.to}
+                as={NavLink}
+                icon={item.icon}
+                style={{ padding: "25px 30px" }}
+              >
+                {item.title}
+              </Nav.Item>
+            ))}
+          </Nav>
+        </Drawer.Body>
       </Drawer>
+
       <main
-        style={{ marginTop: "64px", display: "flex", justifyContent: "center" }}
+        style={{ margin: "30px", display: "flex", justifyContent: "center" }}
       >
         {props.children}
       </main>
