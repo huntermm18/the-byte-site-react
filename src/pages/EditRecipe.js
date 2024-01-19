@@ -186,11 +186,11 @@ function EditRecipePage(props) {
         </DialogActions>
       </Dialog>
 
-      <h1>Edit Recipe</h1>
+      <h1 style={{marginBottom: "15px"}} >Edit Recipe</h1>
       <SearchBar onChange={handleSearchChange} value={searchValue} />
       {searchResults.map((result, index) => (
         <p
-          style={{ cursor: "pointer" }}
+          style={{ cursor: "pointer", fontSize: "20px" }}
           key={index}
           onClick={() => {
             setSelectedRecipe(result);

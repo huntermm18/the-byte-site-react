@@ -47,7 +47,7 @@ function Layout(props) {
 
   return (
     <div>
-      <AppBar position="" style={{ height: "70px" }} >
+      <AppBar position="relative" style={{ height: "70px" }} >
         <Toolbar>
           <IconButton
             edge="start"
@@ -80,12 +80,13 @@ function Layout(props) {
           <Nav style={{ display: "flex", flexDirection: "column" }}>
             {items.map((item, index) => (
               <Nav.Item
-                eventKey={index}
+                key={index}
                 component={Link}
                 to={item.to}
                 as={NavLink}
                 icon={item.icon}
                 style={{ padding: "25px 30px" }}
+                onClick={toggleDrawer}
               >
                 {item.title}
               </Nav.Item>
