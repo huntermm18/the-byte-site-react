@@ -7,7 +7,7 @@ import RecipesContext from "../store/recipes-context";
 import Chip from '@mui/material/Chip';
 
 
-function AllRecipesPage() {
+function RecipeDetailPage() {
   const recipesCtx = useContext(RecipesContext);
   const [activeTags, setActiveTags] = useState([]);
 
@@ -50,4 +50,4 @@ function AllRecipesPage() {
   );
 }
 
-export default AllRecipesPage;
+export default RecipeDetailPage;

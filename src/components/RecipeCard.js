@@ -10,13 +10,29 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Chip from '@mui/material/Chip';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 
 function RecipeCard(props) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { id } = useParams();
   const [isExpanded, setIsExpanded] = useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(id === props.recipe._id ? true : false);
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
+  };
+
+  const handleOpenDialog = () => {
+    setOpen(true);
+    // navigate(`/recipe/${props.recipe._id}`);
+    console.log("location.pathname: ", location.pathname);
+    navigate(`${location.pathname === '/' ? '' : location.pathname}/${props.recipe._id}`);
+  };
+
+  const handleCloseDialog = () => {
+    setOpen(false);
+    navigate(`/all-recipes`);
   };
 
   return (
@@ -36,7 +52,7 @@ function RecipeCard(props) {
       <div className={classes["recipe-title"]}>{props.recipe.title}</div>
       <div className={classes.actions}>
         <div className={classes["expand-wrapper"]}>
-          <Button variant="text" onClick={() => setOpen(true)}>
+          <Button variant="text" onClick={handleOpenDialog}>
             Show Recipe
           </Button>
           <IconButton onClick={toggleExpand}>
@@ -58,13 +74,6 @@ function RecipeCard(props) {
             )}
             <div className={chipClasses["tag-chips"]}>
               {props.recipe.tags.map((tag) => (
-                // <div
-                //   key={tag}
-                //   className={chipClasses.chip}
-                //   style={{ pointerEvents: "none" }}
-                // >
-                //   {tag}
-                // </div>
                 <Chip
                 key={tag}
                 label={tag}
@@ -77,7 +86,7 @@ function RecipeCard(props) {
         )}
       </div>
 
-      <Dialog open={open} onClose={() => setOpen(false)}>
+      <Dialog open={open} onClose={handleCloseDialog}>
         <DialogTitle>{props.recipe.title}</DialogTitle>
         <DialogContent>
           {props.recipe.ingredients && (
@@ -92,7 +101,7 @@ function RecipeCard(props) {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)}>Close</Button>
+          <Button onClick={handleCloseDialog}>Close</Button>
         </DialogActions>
       </Dialog>
     </div>

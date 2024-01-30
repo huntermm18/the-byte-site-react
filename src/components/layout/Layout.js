@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -9,13 +9,12 @@ import HomeIcon from "@mui/icons-material/Home";
 import AddIcon from "@mui/icons-material/Add";
 import ArticleIcon from "@mui/icons-material/Article";
 import EditIcon from "@mui/icons-material/Edit";
-import {
-  Drawer,
-  Nav,
-} from "rsuite";
+import { Drawer, Nav } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
+import SearchIcon from "@rsuite/icons/Search";
 
 function Layout(props) {
+  const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDrawer = () => {
@@ -47,7 +46,7 @@ function Layout(props) {
 
   return (
     <div>
-      <AppBar position="relative" style={{ height: "70px" }} >
+      <AppBar position="relative" style={{ height: "70px" }}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -57,7 +56,21 @@ function Layout(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6">The Byte Site</Typography>
+          <Typography variant="h6" style={{ flexGrow: 1 }}>
+            The Byte Site
+          </Typography>
+          <IconButton
+            size="large"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={() => {
+              navigate("/");
+            }}
+            color="inherit"
+          >
+            <SearchIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
 

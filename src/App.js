@@ -10,7 +10,9 @@ function App() {
   return (
     <Layout>
       <Routes>
+        <Route path="/:id" element={<HomeSearchPage />} />
         <Route path="/" element={<HomeSearchPage />} />
+        <Route path="/all-recipes/:id" element={<AllRecipesPage />} />
         <Route path="/all-recipes" element={<AllRecipesPage />} />
         <Route path="/add-recipe" element={<AddRecipePage />} />
         <Route path="/edit-recipe" element={<EditRecipePage />} />
