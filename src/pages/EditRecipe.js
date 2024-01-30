@@ -6,6 +6,7 @@ import {
   CardContent,
   FormControl,
 } from "@mui/material";
+// import { Button } from 'rsuite';
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@mui/material/Box";
@@ -186,20 +187,25 @@ function EditRecipePage(props) {
         </DialogActions>
       </Dialog>
 
-      <h1 style={{marginBottom: "15px"}} >Edit Recipe</h1>
+      <h1 style={{ marginBottom: "15px" }}>Edit Recipe</h1>
       <SearchBar onChange={handleSearchChange} value={searchValue} />
-      {searchResults.map((result, index) => (
-        <p
-          style={{ cursor: "pointer", fontSize: "20px" }}
-          key={index}
-          onClick={() => {
-            setSelectedRecipe(result);
-            setSearchValue("");
-          }}
-        >
-          {result.title}
-        </p>
-      ))}
+      <div style={{display: "grid", width: "80%", margin: "5px"}}>
+        {searchResults.map((result, index) => (
+          <Button
+            style={{ cursor: "pointer", fontSize: "15px", margin: "5px" }}
+            key={index}
+            onClick={() => {
+              setSelectedRecipe(result);
+              setSearchValue("");
+            }}
+            variant="outlined"
+            color="primary"
+          >
+            {result.title}
+          </Button>
+        ))}
+      </div>
+
       <br />
       <br />
 
