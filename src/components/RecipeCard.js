@@ -9,6 +9,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import Chip from '@mui/material/Chip';
 
 function RecipeCard(props) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -57,13 +58,19 @@ function RecipeCard(props) {
             )}
             <div className={chipClasses["tag-chips"]}>
               {props.recipe.tags.map((tag) => (
-                <div
-                  key={tag}
-                  className={chipClasses.chip}
-                  style={{ pointerEvents: "none" }}
-                >
-                  {tag}
-                </div>
+                // <div
+                //   key={tag}
+                //   className={chipClasses.chip}
+                //   style={{ pointerEvents: "none" }}
+                // >
+                //   {tag}
+                // </div>
+                <Chip
+                key={tag}
+                label={tag}
+                color="default"
+              >
+              </Chip>
               ))}
             </div>
           </div>
