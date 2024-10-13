@@ -6,7 +6,23 @@ import HomeSearchPage from "./pages/HomeSearch";
 import AddRecipePage from "./pages/AddRecipe";
 import EditRecipePage from "./pages/EditRecipe";
 
+// DELETEME
+import {HuntPage, AaaPage, XyzPage, AnniePage} from "./hunt/hunt";
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+
 function App() {
+  const location = useLocation()
+  const p = location.pathname
+  if (p.includes("hunt") || p.includes("aaa") || p.includes("xyz") || p.includes("annie")) {
+    return (
+      <Routes>
+        <Route path="/hunt" element={<HuntPage />} />
+        <Route path="/aaa" element={<AaaPage />} />
+        <Route path="/xyz" element={<XyzPage />} />
+        <Route path="/annie" element={<AnniePage />} />
+      </Routes>
+    );
+  }
   return (
     <Layout>
       <Routes>
