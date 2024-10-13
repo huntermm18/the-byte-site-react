@@ -8,7 +8,7 @@ import EditRecipePage from "./pages/EditRecipe";
 
 // DELETEME
 import {HuntPage, AaaPage, XyzPage, AnniePage} from "./hunt/hunt";
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import {  useLocation } from 'react-router-dom';
 
 function App() {
   const location = useLocation()
